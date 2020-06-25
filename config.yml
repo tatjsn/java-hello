@@ -2,3 +2,8 @@ logging:
   level: INFO
   loggers:
     com.example.tj: DEBUG
+server:
+  adminConnectors: []
+  applicationConnectors:
+    - type: http
+      port: 8080

@@ -1,1 +1,1 @@
-web: java -jar target/hello-1.0-SNAPSHOT.jar server config.yml
+web: java -Ddw.server.applicationConnectors[0].port=$PORT -jar target/hello-1.0-SNAPSHOT.jar server config.yml
