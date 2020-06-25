@@ -1,5 +1,6 @@
 package com.example.tj;
 
+import com.example.tj.resources.HelloResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -23,7 +24,8 @@ public class HelloTjApplication extends Application<HelloTjConfiguration> {
     @Override
     public void run(final HelloTjConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+        final HelloResource resource = new HelloResource();
+        environment.jersey().register(resource);
     }
 
 }
