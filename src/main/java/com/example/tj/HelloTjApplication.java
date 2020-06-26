@@ -24,7 +24,7 @@ public class HelloTjApplication extends Application<HelloTjConfiguration> {
     @Override
     public void run(final HelloTjConfiguration configuration,
                     final Environment environment) {
-        final HelloResource resource = new HelloResource();
+        final var resource = new HelloResource();
         environment.jersey().register(resource);
     }
 
