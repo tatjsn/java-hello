@@ -8,5 +8,4 @@ workflows:
     jobs:
       - maven/test:
           executor:
-            default:
-              tag: "11.0"
+            tag: "11.0"
