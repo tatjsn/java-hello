@@ -1,12 +1,15 @@
 package com.example.tj;
 
 import com.example.tj.resources.HelloResource;
+import com.google.template.soy.SoyFileSet;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+
+import java.util.Objects;
 
 public class HelloTjApplication extends Application<HelloTjConfiguration> {
 
@@ -30,7 +33,11 @@ public class HelloTjApplication extends Application<HelloTjConfiguration> {
         final var factory = new JdbiFactory();
         final var jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
         final var create = DSL.using(SQLDialect.POSTGRES);
-        final var resource = new HelloResource(jdbi, create);
+        final var templates = SoyFileSet.builder()
+                .add(Objects.requireNonNull(HelloTjApplication.class.getClassLoader().getResource("simple.soy")))
+                .build()
+                .compileTemplates();
+        final var resource = new HelloResource(jdbi, create, templates);
         environment.jersey().register(resource);
     }
 
