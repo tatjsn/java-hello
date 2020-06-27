@@ -2,6 +2,7 @@ package com.example.tj;
 
 import com.example.tj.resources.HelloResource;
 import com.google.template.soy.SoyFileSet;
+import com.google.template.soy.jbcsrc.api.SoySauceBuilder;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
@@ -33,10 +34,7 @@ public class HelloTjApplication extends Application<HelloTjConfiguration> {
         final var factory = new JdbiFactory();
         final var jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
         final var create = DSL.using(SQLDialect.POSTGRES);
-        final var templates = SoyFileSet.builder()
-                .add(Objects.requireNonNull(HelloTjApplication.class.getClassLoader().getResource("simple.soy")))
-                .build()
-                .compileTemplates();
+        final var templates = new SoySauceBuilder().build();
         final var resource = new HelloResource(jdbi, create, templates);
         environment.jersey().register(resource);
     }

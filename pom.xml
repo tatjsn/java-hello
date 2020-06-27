@@ -20,6 +20,14 @@
         <mainClass>com.example.tj.HelloTjApplication</mainClass>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -57,11 +65,6 @@
             <version>3.13.2</version>
         </dependency>
         <dependency>
-            <groupId>com.google.template</groupId>
-            <artifactId>soy</artifactId>
-            <version>2019-10-08</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -72,6 +75,31 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>67.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.12.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.common.html.types</groupId>
+            <artifactId>types</artifactId>
+            <version>1.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>soy</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>soy-lib</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
