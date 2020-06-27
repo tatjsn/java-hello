@@ -5,6 +5,8 @@ import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 
 public class HelloTjApplication extends Application<HelloTjConfiguration> {
 
@@ -27,7 +29,8 @@ public class HelloTjApplication extends Application<HelloTjConfiguration> {
                     final Environment environment) {
         final var factory = new JdbiFactory();
         final var jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
-        final var resource = new HelloResource(jdbi);
+        final var create = DSL.using(SQLDialect.POSTGRES);
+        final var resource = new HelloResource(jdbi, create);
         environment.jersey().register(resource);
     }
 
