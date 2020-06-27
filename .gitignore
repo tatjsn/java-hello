@@ -1,4 +1,6 @@
 .idea
 target
 dependency-reduced-pom.xml
-hello-java-3.iml
+*.iml
+soy/*.jar
+
