@@ -7,8 +7,43 @@
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
 </head>
 <body>
 <h1>Hello {$name}!</h1>
+<p>
+  <button id="signin">Sign In</button>
+</p>
+{literal}
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyC2ynLACXs-xxseP7UzveYeqtOeSWxUuHA",
+    authDomain: "coolblog-c1617.firebaseapp.com",
+    databaseURL: "https://coolblog-c1617.firebaseio.com",
+    projectId: "coolblog-c1617",
+    storageBucket: "coolblog-c1617.appspot.com",
+    messagingSenderId: "444267703473",
+    appId: "1:444267703473:web:ab01bc11f107d585b48690"
+  };
+  firebase.initializeApp(firebaseConfig);
+  firebase.auth().getRedirectResult().then(function(result) {
+    if (result.user) {
+      console.log('Redirected with user');
+    } else {
+      console.log('Not redirected');
+      var user = firebase.auth().currentUser;
+      if (user) {
+        console.log('Existing user');
+      } else {
+        console.log('No user');
+      }
+    }
+  });
+  document.getElementById('signin').addEventListener('click', function() {
+    firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+  });
+</script>
+{/literal}
 </body>
 {/template}
