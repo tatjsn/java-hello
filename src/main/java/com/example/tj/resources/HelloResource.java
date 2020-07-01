@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.time.Duration;
 import java.util.Map;
 
 import static org.jooq.impl.DSL.field;
@@ -67,7 +68,9 @@ public class HelloResource {
             throw new WebApplicationException("Id token verification failed.");
         }
         return Response.seeOther(URI.create("https://tj-hello.herokuapp.com/"))
-                .cookie(new NewCookie("token", decodedToken.getUid()))
+                .cookie(new NewCookie("token", decodedToken.getUid(),
+                        null, "tj-hello.herokuapp.com", null,
+                        (int) Duration.ofDays(365).toSeconds(), true, true))
                 .build();
     }
 }
