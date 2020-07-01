@@ -1,5 +1,5 @@
 {namespace examples.simple}
-{template .helloWorld}
+{template .signin}
 {@param name: string}
 <!DOCTYPE html>
 <html lang="en">
@@ -11,13 +11,13 @@
   <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
 </head>
 <body>
-<h1>Hello {$name}!</h1>
 <p>
-  <button id="signin">Sign In</button>
+  <button id="signin">Signin with Google</button>
 </p>
+<form id="callback" action="/callback" method="post"></form>
 {literal}
 <script>
-  var firebaseConfig = {
+  const firebaseConfig = {
     apiKey: "AIzaSyC2ynLACXs-xxseP7UzveYeqtOeSWxUuHA",
     authDomain: "coolblog-c1617.firebaseapp.com",
     databaseURL: "https://coolblog-c1617.firebaseio.com",
@@ -27,14 +27,26 @@
     appId: "1:444267703473:web:ab01bc11f107d585b48690"
   };
   firebase.initializeApp(firebaseConfig);
+  async function postToCallback(user) {
+    const token = await user.getIdToken();
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "token";
+    input.value = token;
+    const form = document.forms["callback"];
+    form.appendChild(input);
+    form.submit();
+  }
   firebase.auth().getRedirectResult().then(function(result) {
     if (result.user) {
       console.log('Redirected with user');
+      postToCallback(result.user);
     } else {
       console.log('Not redirected');
       var user = firebase.auth().currentUser;
       if (user) {
         console.log('Existing user');
+        postToCallback(user);
       } else {
         console.log('No user');
       }

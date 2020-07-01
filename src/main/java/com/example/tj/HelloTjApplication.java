@@ -1,7 +1,9 @@
 package com.example.tj;
 
 import com.example.tj.resources.HelloResource;
-import com.google.template.soy.SoyFileSet;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.template.soy.jbcsrc.api.SoySauceBuilder;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
@@ -10,7 +12,8 @@ import io.dropwizard.setup.Environment;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
-import java.util.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 public class HelloTjApplication extends Application<HelloTjConfiguration> {
 
@@ -30,7 +33,14 @@ public class HelloTjApplication extends Application<HelloTjConfiguration> {
 
     @Override
     public void run(final HelloTjConfiguration configuration,
-                    final Environment environment) {
+                    final Environment environment) throws IOException {
+        final var json = System.getenv("GOOG_CREDS");
+        final var jsonInputStream = new ByteArrayInputStream((json.getBytes()));
+        final var options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(jsonInputStream))
+                .build();
+        FirebaseApp.initializeApp(options);
+
         final var factory = new JdbiFactory();
         final var jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
         final var create = DSL.using(SQLDialect.POSTGRES);
