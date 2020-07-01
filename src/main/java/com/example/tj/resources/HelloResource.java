@@ -32,6 +32,17 @@ public class HelloResource {
         this.templates = templates;
     }
 
+    private boolean isAdmin(String token) {
+        var sql = create.select(field("id"))
+                .from(table("admin"))
+                .where(field("hash").eq(token))
+                .getSQL(ParamType.INLINED);
+        var result = jdbi.withHandle(handle -> handle.createQuery(sql)
+                .mapToMap()
+                .list());
+        return !result.isEmpty();
+    }
+
     @GET
     public String index() {
         var sql = create.select(field("name"))
@@ -46,6 +57,31 @@ public class HelloResource {
                 .renderHtml()
                 .get()
                 .toString();
+    }
+
+    @POST
+    public String postIndex(
+            @FormParam("name") String newName,
+            @FormParam("secret") String secret,
+            @CookieParam("token") String token) {
+        if (token == null) {
+            throw new WebApplicationException("Corrupt input 1");
+        }
+        if (!token.equals(secret)) {
+            throw new WebApplicationException("Corrupt input 2");
+        }
+        if (isAdmin(token)) {
+            throw new WebApplicationException("Corrupt input 3");
+        }
+        var sql = create.update(table("name"))
+                .set(field("name"), newName)
+                .where(field("id").eq(1))
+                .getSQL(ParamType.INLINED);
+        jdbi.withHandle(handle -> {
+            handle.execute(sql);
+            return null;
+        });
+        return index();
     }
 
     @Path("/signin")
@@ -72,5 +108,28 @@ public class HelloResource {
                         null, null, null,
                         (int) Duration.ofDays(365).toSeconds(), true, true))
                 .build();
+    }
+
+    @Path("/admin")
+    @GET
+    public String admin(@CookieParam("token") String token) {
+        if (token == null) {
+            throw new NotAuthorizedException("Please sign in first");
+        }
+        if (isAdmin(token)) {
+            throw new NotAuthorizedException("Requires admin right");
+        }
+        var sql = create.select(field("name"))
+                .from(table("foo"))
+                .where(field("id").eq(1))
+                .getSQL(ParamType.INLINED);
+        var result = jdbi.withHandle(handle -> handle.createQuery(sql)
+                .mapToMap()
+                .list());
+        return templates.renderTemplate("examples.simple.admin")
+                .setData(Map.of("name", result.get(0).get("name")))
+                .renderHtml()
+                .get()
+                .toString();
     }
 }
