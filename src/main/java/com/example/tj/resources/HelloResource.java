@@ -70,10 +70,10 @@ public class HelloResource {
         if (!token.equals(secret)) {
             throw new WebApplicationException("Corrupt input 2");
         }
-        if (isAdmin(token)) {
+        if (!isAdmin(token)) {
             throw new WebApplicationException("Corrupt input 3");
         }
-        var sql = create.update(table("name"))
+        var sql = create.update(table("foo"))
                 .set(field("name"), newName)
                 .where(field("id").eq(1))
                 .getSQL(ParamType.INLINED);
@@ -114,10 +114,10 @@ public class HelloResource {
     @GET
     public String admin(@CookieParam("token") String token) {
         if (token == null) {
-            throw new NotAuthorizedException("Please sign in first");
+            throw new NotAuthorizedException("");
         }
-        if (isAdmin(token)) {
-            throw new NotAuthorizedException("Requires admin right");
+        if (!isAdmin(token)) {
+            throw new WebApplicationException("Corrupt input 1");
         }
         var sql = create.select(field("name"))
                 .from(table("foo"))
@@ -127,7 +127,10 @@ public class HelloResource {
                 .mapToMap()
                 .list());
         return templates.renderTemplate("examples.simple.admin")
-                .setData(Map.of("name", result.get(0).get("name")))
+                .setData(Map.of(
+                        "name", result.get(0).get("name"),
+                        "secret", token
+                ))
                 .renderHtml()
                 .get()
                 .toString();
