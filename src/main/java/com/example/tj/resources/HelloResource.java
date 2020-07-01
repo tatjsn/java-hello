@@ -69,7 +69,7 @@ public class HelloResource {
         }
         return Response.seeOther(URI.create("https://tj-hello.herokuapp.com/"))
                 .cookie(new NewCookie("token", decodedToken.getUid(),
-                        null, "tj-hello.herokuapp.com", null,
+                        null, null, null,
                         (int) Duration.ofDays(365).toSeconds(), true, true))
                 .build();
     }
