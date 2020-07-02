@@ -22,6 +22,7 @@ import static org.jooq.impl.DSL.table;
 @Path("/")
 @Produces(MediaType.TEXT_HTML)
 public class HelloResource {
+    private static final URI ENTRY = URI.create("https://tj-hello.herokuapp.com/");
     private final Jdbi jdbi;
     private final DSLContext create;
     private final SoySauce templates;
@@ -59,31 +60,6 @@ public class HelloResource {
                 .toString();
     }
 
-    @POST
-    public String postIndex(
-            @FormParam("name") String newName,
-            @FormParam("secret") String secret,
-            @CookieParam("token") String token) {
-        if (token == null) {
-            throw new WebApplicationException("Corrupt input 1");
-        }
-        if (!token.equals(secret)) {
-            throw new WebApplicationException("Corrupt input 2");
-        }
-        if (!isAdmin(token)) {
-            throw new WebApplicationException("Corrupt input 3");
-        }
-        var sql = create.update(table("foo"))
-                .set(field("name"), newName)
-                .where(field("id").eq(1))
-                .getSQL(ParamType.INLINED);
-        jdbi.withHandle(handle -> {
-            handle.execute(sql);
-            return null;
-        });
-        return index();
-    }
-
     @Path("/signin")
     @GET
     public String signin() {
@@ -103,7 +79,7 @@ public class HelloResource {
         } catch (FirebaseAuthException e) {
             throw new WebApplicationException("Id token verification failed.");
         }
-        return Response.seeOther(URI.create("https://tj-hello.herokuapp.com/"))
+        return Response.seeOther(ENTRY)
                 .cookie(new NewCookie("token", decodedToken.getUid(),
                         null, null, null,
                         (int) Duration.ofDays(365).toSeconds(), true, true))
@@ -134,5 +110,32 @@ public class HelloResource {
                 .renderHtml()
                 .get()
                 .toString();
+    }
+
+    @Path("/update")
+    @POST
+    public Response update(
+            @FormParam("name") String newName,
+            @FormParam("secret") String secret,
+            @CookieParam("token") String token) {
+        if (token == null) {
+            throw new WebApplicationException("Corrupt input 1");
+        }
+        if (!token.equals(secret)) {
+            throw new WebApplicationException("Corrupt input 2");
+        }
+        if (!isAdmin(token)) {
+            throw new WebApplicationException("Corrupt input 3");
+        }
+        var sql = create.update(table("foo"))
+                .set(field("name"), newName)
+                .where(field("id").eq(1))
+                .getSQL(ParamType.INLINED);
+        jdbi.withHandle(handle -> {
+            handle.execute(sql);
+            return null;
+        });
+        return Response.seeOther(ENTRY)
+                .build();
     }
 }
