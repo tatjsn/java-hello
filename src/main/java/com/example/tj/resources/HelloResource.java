@@ -46,7 +46,7 @@ public class HelloResource {
 
     @GET
     public String index() {
-        var sql = create.select(field("name"))
+        var sql = create.select(field("name"), field("image"))
                 .from(table("foo"))
                 .where(field("id").eq(1))
                 .getSQL(ParamType.INLINED);
@@ -54,7 +54,7 @@ public class HelloResource {
                 .mapToMap()
                 .list());
         return templates.renderTemplate("examples.simple.index")
-                .setData(Map.of("name", result.get(0).get("name")))
+                .setData(result.get(0))
                 .renderHtml()
                 .get()
                 .toString();
@@ -95,7 +95,7 @@ public class HelloResource {
         if (!isAdmin(token)) {
             throw new WebApplicationException("Corrupt input 1");
         }
-        var sql = create.select(field("name"))
+        var sql = create.select(field("name"), field("image"))
                 .from(table("foo"))
                 .where(field("id").eq(1))
                 .getSQL(ParamType.INLINED);
@@ -105,6 +105,7 @@ public class HelloResource {
         return templates.renderTemplate("examples.simple.admin")
                 .setData(Map.of(
                         "name", result.get(0).get("name"),
+                        "image", result.get(0).get("image"),
                         "secret", token
                 ))
                 .renderHtml()
@@ -115,7 +116,8 @@ public class HelloResource {
     @Path("/update")
     @POST
     public Response update(
-            @FormParam("name") String newName,
+            @FormParam("name") String name,
+            @FormParam("image") String image,
             @FormParam("secret") String secret,
             @CookieParam("token") String token) {
         if (token == null) {
@@ -128,7 +130,8 @@ public class HelloResource {
             throw new WebApplicationException("Corrupt input 3");
         }
         var sql = create.update(table("foo"))
-                .set(field("name"), newName)
+                .set(field("name"), name)
+                .set(field("image"), image)
                 .where(field("id").eq(1))
                 .getSQL(ParamType.INLINED);
         jdbi.withHandle(handle -> {

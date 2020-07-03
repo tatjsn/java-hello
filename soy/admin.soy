@@ -1,6 +1,7 @@
 {namespace examples.simple}
 {template .admin}
 {@param name: string}
+{@param image: string}
 {@param secret: string}
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,8 @@
   <div>
     <label for="name">Name: </label>
     <input type="text" name="name" value="{$name}" required>
+    <label for="image">Image: </label>
+    <input type="text" name="image" value="{$image}" required>
     <input type="hidden" name="secret" value="{$secret}">
   </div>
   <div>

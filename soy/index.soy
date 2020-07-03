@@ -1,6 +1,7 @@
 {namespace examples.simple}
 {template .index}
 {@param name: string}
+{@param image: string}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+<img src="{$image}" style="display:block">
 <h1>Hello {$name}!</h1>
 <p>
   <a href="/signin">Sign in</a>
