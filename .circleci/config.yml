@@ -1,12 +1,29 @@
 version: 2.1
 
 orbs:
-  maven: circleci/maven@1.0.1
+  maven: circleci/maven@1.0.2
 
 workflows:
   maven_test:
     jobs:
-      - maven/test:
+      - prebuild:
           executor:
             name: maven/default
             tag: "11.0"
+      - maven/test:
+          requires: prebuild
+          executor:
+            name: maven/default
+            tag: "11.0"
+          maven_command: mvnw
+          command: "package"
+
+jobs:
+  prebuild:
+    steps:
+      - checkout
+      - run
+          name: Prebuild
+          command: |
+            cd soy
+            make
