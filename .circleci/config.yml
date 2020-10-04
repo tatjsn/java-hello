@@ -22,7 +22,7 @@ jobs:
   prebuild:
     steps:
       - checkout
-      - run
+      - run:
           name: Prebuild
           command: |
             cd soy
