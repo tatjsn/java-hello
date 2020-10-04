@@ -13,7 +13,7 @@ workflows:
           executor:
             name: maven/default
             tag: "11.0"
-          maven_command: mvnw
+          maven_command: ./mvnw
           command: "package"
 
 jobs:
