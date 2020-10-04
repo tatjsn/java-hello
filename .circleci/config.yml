@@ -6,9 +6,10 @@ orbs:
 workflows:
   maven_test:
     jobs:
-      - prebuild:
+      - prebuild
       - maven/test:
-          requires: prebuild
+          requires:
+            - prebuild
           executor:
             name: maven/default
             tag: "11.0"
