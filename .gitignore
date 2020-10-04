@@ -3,4 +3,5 @@ target
 dependency-reduced-pom.xml
 *.iml
 soy/*.jar
+repo/com
 

@@ -25,6 +25,10 @@
             <id>project.local</id>
             <name>project</name>
             <url>file:${project.basedir}/repo</url>
+            <snapshots>
+              <enabled>true</enabled>
+              <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
         </repository>
     </repositories>
 
