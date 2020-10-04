@@ -14,7 +14,7 @@ workflows:
             name: maven/default
             tag: "11.0"
           maven_command: ./mvnw
-          command: "package"
+          command: "package --update-snapshots"
 
 jobs:
   prebuild:
