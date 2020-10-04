@@ -25,6 +25,4 @@ jobs:
       - checkout
       - run:
           name: Prebuild
-          command: |
-            cd soy
-            make
+          command: cd soy && make
