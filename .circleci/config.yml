@@ -25,4 +25,4 @@ jobs:
       - checkout
       - run:
           name: Prebuild
-          command: cd soy && pwd && make
+          command: cd soy && ls -la SoyToJbcSrcCompiler.jar && make
