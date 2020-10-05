@@ -37,4 +37,4 @@ jobs:
       - jq/install
       - run:
           name: Publish to heroku
-          command: sh heroku.sh
+          command: ls -la && sh --help && sh ./heroku.sh
