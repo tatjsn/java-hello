@@ -25,4 +25,4 @@ jobs:
           command: ./mvnw package --update-snapshots
       - run:
           name: Publish to heroku
-          command: sh ./heroku.sh
+          command: sh heroku.sh
