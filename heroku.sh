@@ -1,12 +1,13 @@
 mkdir app
 cd app
 cp ../target/hello-1.0-SNAPSHOT.jar .
+cp ../config.yml .
 echo \# Download java binary
 curl -LO https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.5%2B10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz
 tar xzvf OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz
 rm OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz
-echo \# Debug: Show files
-ls -la
+rm -rf ./jdk-11.0.5+10/demo
+rm -rf ./jdk-11.0.5+10/man
 cd ..
 echo \# Create slug.tgz
 tar czfv slug.tgz ./app
