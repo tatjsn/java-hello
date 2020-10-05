@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   maven: circleci/maven@1.0.2
+  jq: circleci/jq@2.2.0
 
 workflows:
   maven_test:
@@ -15,6 +16,9 @@ workflows:
             tag: "11.0"
           maven_command: ./mvnw
           command: "package --update-snapshots"
+      - postbuild:
+          requires:
+            - maven/test
 
 jobs:
   prebuild:
@@ -26,3 +30,11 @@ jobs:
       - run:
           name: Prebuild
           command: cd soy && make
+  postbuild:
+    executor:
+      name: jq/default
+    steps:
+      - checkout
+      - run:
+          name: Postbuild
+          command: sh heroku.sh
