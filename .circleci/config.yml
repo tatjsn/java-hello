@@ -28,13 +28,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Prebuild
+          name: Make soy templates
           command: cd soy && make
   postbuild:
     executor:
-      name: jq/default
+      name: maven/default
     steps:
-      - checkout
+      - jq/install
       - run:
-          name: Postbuild
+          name: Publish to heroku
           command: sh heroku.sh
