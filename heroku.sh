@@ -9,7 +9,7 @@ curl -X POST \
 -H "Authorization: Bearer $HEROKU_API_KEY" \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/vnd.heroku+json; version=3' \
--d '{"process_types":{"web":"./jdk-11.0.5+10/bin/java -Ddw.server.applicationConnectors[0].port=$PORT -Ddw.database.user=$JDBC_DATABASE_USERNAME -Ddw.database.password=$JDBC_DATABASE_PASSWORD -Ddw.database.url=$JDBC_DATABASE_URL -jar target/hello-1.0-SNAPSHOT.jar server config.yml"}}' \
+-d '{"process_types":{"web":"./jdk-11.0.5+10/bin/java -Ddw.server.applicationConnectors[0].port=$PORT -Ddw.database.user=$JDBC_DATABASE_USERNAME -Ddw.database.password=$JDBC_DATABASE_PASSWORD -Ddw.database.url=$JDBC_DATABASE_URL -jar hello-1.0-SNAPSHOT.jar server config.yml"}}' \
 https://api.heroku.com/apps/tj-hello/slugs > res.json
 
 SLUG_URL=$(cat res.json | jq -r .blob.url)

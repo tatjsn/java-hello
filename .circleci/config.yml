@@ -7,34 +7,22 @@ orbs:
 workflows:
   maven_test:
     jobs:
-      - prebuild
-      - maven/test:
-          requires:
-            - prebuild
-          executor:
-            name: maven/default
-            tag: "11.0"
-          maven_command: ./mvnw
-          command: "package --update-snapshots"
-      - postbuild:
-          requires:
-            - maven/test
+      - all
 
 jobs:
-  prebuild:
+  all:
     executor:
       name: maven/default
       tag: "11.0"
     steps:
+      - jq/install
       - checkout
       - run:
           name: Make soy templates
           command: cd soy && make
-  postbuild:
-    executor:
-      name: maven/default
-    steps:
-      - jq/install
+      - run:
+          name: Build jar
+          command: ./mvnw package --update-snapshots
       - run:
           name: Publish to heroku
-          command: ls -la && sh --help && sh ./heroku.sh
+          command: sh ./heroku.sh
