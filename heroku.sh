@@ -8,6 +8,7 @@ tar xzf OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz
 rm OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz
 rm -rf ./jdk-11.0.5+10/demo
 rm -rf ./jdk-11.0.5+10/man
+find ./jdk-11.0.5+10 -name "src\.zip" -exec rm {} \;
 cd ..
 echo \# Create slug.tgz
 tar czfv slug.tgz ./app
