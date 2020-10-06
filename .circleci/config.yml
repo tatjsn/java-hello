@@ -13,6 +13,9 @@ workflows:
               only:
                 - master
       - maven/test:
+          executor:
+            name: maven/default
+            tag: "11.0"
           filters:
             branches:
               ignore:
