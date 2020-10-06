@@ -5,9 +5,18 @@ orbs:
   jq: circleci/jq@2.2.0
 
 workflows:
-  maven_test:
+  main:
     jobs:
-      - all
+      - all:
+          filters:
+            branches:
+              only:
+                - master
+      - maven/test:
+          filters:
+            branches:
+              ignore:
+                - master
 
 jobs:
   all:
@@ -20,9 +29,12 @@ jobs:
       - run:
           name: Make soy templates
           command: cd soy && make
-      - run:
-          name: Build jar
-          command: ./mvnw package --update-snapshots
+      - maven/with_cache:
+          maven_command: ./mvnw
+          steps:
+            - run:
+                name: Build jar
+                command: ./mvnw package --update-snapshots
       - run:
           name: Publish to heroku
           command: sh heroku.sh
