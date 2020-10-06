@@ -6,19 +6,17 @@ orbs:
 
 workflows:
   main:
-    filters:
-      branches:
-        only:
-          - master
     jobs:
-      - all
-  test_only:
-    filters:
-      branches:
-        ignore:
-          - master
-    jobs:
-      - maven/test
+      - all:
+          filters:
+            branches:
+              only:
+                - master
+      - maven/test:
+          filters:
+            branches:
+              ignore:
+                - master
 
 jobs:
   all:
