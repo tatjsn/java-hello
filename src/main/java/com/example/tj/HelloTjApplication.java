@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.template.soy.jbcsrc.api.SoySauceBuilder;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -28,7 +29,7 @@ public class HelloTjApplication extends Application<HelloTjConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<HelloTjConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addBundle(new AssetsBundle("/assets", "/assets"));
     }
 
     @Override
