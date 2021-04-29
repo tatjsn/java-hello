@@ -1,6 +1,7 @@
 package com.example.tj;
 
 import com.example.tj.resources.HelloResource;
+import com.example.tj.resources.SigninResource;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -46,8 +47,8 @@ public class HelloTjApplication extends Application<HelloTjConfiguration> {
         final var jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
         final var create = DSL.using(SQLDialect.POSTGRES);
         final var templates = new SoySauceBuilder().build();
-        final var resource = new HelloResource(jdbi, create, templates);
-        environment.jersey().register(resource);
+        environment.jersey().register(new HelloResource(jdbi, create, templates));
+        environment.jersey().register(new SigninResource(templates));
     }
 
 }
