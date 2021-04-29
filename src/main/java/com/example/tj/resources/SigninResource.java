@@ -42,7 +42,7 @@ public class SigninResource {
         }
         return Response.seeOther(ENTRY)
                 .cookie(new NewCookie("token", decodedToken.getUid(),
-                        null, null, null,
+                        "/", null, null,
                         (int) Duration.ofDays(365).toSeconds(), true, true))
                 .build();
     }
