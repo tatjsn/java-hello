@@ -40,16 +40,18 @@ public class HelloResource {
     }
 
     @GET
-    public String index() {
+    public String index(@CookieParam("token") String token) {
         var sql = create.select(field("name"), field("image"))
                 .from(table("foo"))
                 .where(field("id").eq(1))
                 .getSQL(ParamType.INLINED);
         var result = jdbi.withHandle(handle -> handle.createQuery(sql)
                 .mapToMap()
-                .list());
+                .list())
+                .get(0);
+        result.put("signed", token != null);
         return templates.renderTemplate("examples.simple.index")
-                .setData(result.get(0))
+                .setData(result)
                 .renderHtml()
                 .get()
                 .toString();
