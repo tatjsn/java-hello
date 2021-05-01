@@ -10,7 +10,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 import java.util.Map;
 
 import static org.jooq.impl.DSL.field;
@@ -111,7 +110,8 @@ public class HelloResource {
             handle.execute(sql);
             return null;
         });
-        return Response.seeOther(uriInfo.getBaseUriBuilder().path("/").build())
-                .build();
+        var scheme = uriInfo.getRequestUri().getScheme();
+        var topUri = uriInfo.getBaseUriBuilder().scheme(scheme).path("/").build();
+        return Response.seeOther(topUri).build();
     }
 }

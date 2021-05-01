@@ -7,7 +7,6 @@ import com.google.template.soy.jbcsrc.api.SoySauce;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.net.URI;
 import java.time.Duration;
 
 @Path("/signin")
@@ -37,7 +36,9 @@ public class SigninResource {
         } catch (FirebaseAuthException e) {
             throw new WebApplicationException("Id token verification failed.");
         }
-        return Response.seeOther(uriInfo.getBaseUriBuilder().path("/").build())
+        var scheme = uriInfo.getRequestUri().getScheme();
+        var topUri = uriInfo.getBaseUriBuilder().scheme(scheme).path("/").build();
+        return Response.seeOther(topUri)
                 .cookie(new NewCookie("token", decodedToken.getUid(),
                         "/", null, null,
                         (int) Duration.ofDays(365).toSeconds(), true, true))
