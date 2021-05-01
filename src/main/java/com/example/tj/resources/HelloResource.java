@@ -110,8 +110,7 @@ public class HelloResource {
             handle.execute(sql);
             return null;
         });
-        var scheme = uriInfo.getRequestUri().getScheme();
-        var topUri = uriInfo.getBaseUriBuilder().scheme(scheme).path("/").build();
-        return Response.seeOther(topUri).build();
+        return Response.seeOther(uriInfo.getBaseUriBuilder().path("/").build())
+                .build();
     }
 }

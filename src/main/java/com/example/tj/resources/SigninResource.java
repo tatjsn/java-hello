@@ -36,9 +36,7 @@ public class SigninResource {
         } catch (FirebaseAuthException e) {
             throw new WebApplicationException("Id token verification failed.");
         }
-        var scheme = uriInfo.getRequestUri().getScheme();
-        var topUri = uriInfo.getBaseUriBuilder().scheme(scheme).path("/").build();
-        return Response.seeOther(topUri)
+        return Response.seeOther(uriInfo.getBaseUriBuilder().path("/").build())
                 .cookie(new NewCookie("token", decodedToken.getUid(),
                         "/", null, null,
                         (int) Duration.ofDays(365).toSeconds(), true, true))

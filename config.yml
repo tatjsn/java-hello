@@ -7,6 +7,7 @@ server:
   applicationConnectors:
     - type: http
       port: 8080
+      useForwardedHeaders: true
 database:
   # the name of your JDBC driver
   driverClass: org.postgresql.Driver
