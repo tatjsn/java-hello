@@ -6,8 +6,10 @@ import org.jooq.DSLContext;
 import org.jooq.conf.ParamType;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.Map;
 
@@ -17,7 +19,6 @@ import static org.jooq.impl.DSL.table;
 @Path("/")
 @Produces(MediaType.TEXT_HTML)
 public class HelloResource {
-    private static final URI ENTRY = URI.create("https://tj-hello.herokuapp.com/");
     private final Jdbi jdbi;
     private final DSLContext create;
     private final SoySauce templates;
@@ -61,10 +62,10 @@ public class HelloResource {
     @GET
     public String admin(@CookieParam("token") String token) {
         if (token == null) {
-            throw new NotAuthorizedException("");
+            throw new NotAuthorizedException("No token");
         }
         if (isNotAdmin(token)) {
-            throw new WebApplicationException("Corrupt input 1");
+            throw new NotAuthorizedException("You don't have access right");
         }
         var sql = create.select(field("name"), field("image"))
                 .from(table("foo"))
@@ -90,7 +91,8 @@ public class HelloResource {
             @FormParam("name") String name,
             @FormParam("image") String image,
             @FormParam("secret") String secret,
-            @CookieParam("token") String token) {
+            @CookieParam("token") String token,
+            @Context UriInfo uriInfo) {
         if (token == null) {
             throw new WebApplicationException("Corrupt input 1");
         }
@@ -109,7 +111,7 @@ public class HelloResource {
             handle.execute(sql);
             return null;
         });
-        return Response.seeOther(ENTRY)
+        return Response.seeOther(uriInfo.getBaseUriBuilder().path("/").build())
                 .build();
     }
 }
