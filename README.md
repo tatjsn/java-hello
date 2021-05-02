@@ -1,13 +1,22 @@
 # HelloTj
 
-How to start the HelloTj application
----
-1. Run `cd soy && make` to build templages
-1. Run `./mvnw package --update-snapshots` to build your application
-1. Start application with `java -jar target/hello-1.0-SNAPSHOT.jar server config.yml`
-1. To check that your application is running enter url `http://localhost:8080`
+## How to build
+```sh
+cd soy && make
+./mvnw package --update-snapshots
+```
 
-Health Check
----
+## How to run locally
+```sh
+# Tab 1
+docker run -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres
 
-To see your applications health enter url `http://localhost:8081/healthcheck`
+# Tab 2
+pgcli postgres://postgres:mysecretpassword@localhost:5432/postgres
+# postgres@localhost:postgres> \i migration.sql
+export GOOG_CREDS=$(heroku config:get GOOG_CREDS -a your-app-name)
+java -jar target/hello-1.0-SNAPSHOT.jar server config.yml
+```
+
+Then open http://localhost:8080
+
