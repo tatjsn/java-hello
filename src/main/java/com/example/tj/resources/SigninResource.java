@@ -59,8 +59,14 @@ public class SigninResource {
     @Path("/signout")
     @GET
     public Response signout(@Context UriInfo uriInfo) {
+        final var authUrl = auth.logoutUrl(uriInfo.getBaseUriBuilder().path("/").build().toString(), true)
+                .useFederated(true)
+                .build();
         return Response.ok()
                 .entity(templates.renderTemplate("examples.simple.signout")
+                        .setData(Map.of(
+                                "authUrl", authUrl
+                        ))
                         .renderHtml()
                         .get()
                         .toString())

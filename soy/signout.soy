@@ -1,34 +1,14 @@
 {namespace examples.simple}
 {template .signout}
-{@param name: string}
+{@param authUrl: string}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
 </head>
 <body>
-  <p id="msg">Signing out...</p>
-  <p id="msg"><a href="/">Back to top</a></p>
-  {literal}
-    <script>
-     const firebaseConfig = {
-       apiKey: "AIzaSyC2ynLACXs-xxseP7UzveYeqtOeSWxUuHA",
-       authDomain: "coolblog-c1617.firebaseapp.com",
-       databaseURL: "https://coolblog-c1617.firebaseio.com",
-       projectId: "coolblog-c1617",
-       storageBucket: "coolblog-c1617.appspot.com",
-       messagingSenderId: "444267703473",
-       appId: "1:444267703473:web:ab01bc11f107d585b48690"
-     };
-     firebase.initializeApp(firebaseConfig);
-     firebase.auth().signOut().then(() => {
-       document.getElementById("msg").innerHTML = "You're now signed out";
-     });
-    </script>
-  {/literal}
+<a href="{$authUrl}">Signin with Auth0</a>
 </body>
 {/template}
