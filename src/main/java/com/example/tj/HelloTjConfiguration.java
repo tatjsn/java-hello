@@ -13,6 +13,18 @@ public class HelloTjConfiguration extends Configuration {
     @NotNull
     private DataSourceFactory database = new DataSourceFactory();
 
+    @Valid
+    @NotNull
+    private String authDomain;
+
+    @Valid
+    @NotNull
+    private String authClientId;
+
+    @Valid
+    @NotNull
+    private String authClientSecret;
+
     @JsonProperty("database")
     public void setDataSourceFactory(DataSourceFactory factory) {
         this.database = factory;
@@ -21,5 +33,35 @@ public class HelloTjConfiguration extends Configuration {
     @JsonProperty("database")
     public DataSourceFactory getDataSourceFactory() {
         return database;
+    }
+
+    @JsonProperty("authDomain")
+    public String getAuthDomain() {
+        return authDomain;
+    }
+
+    @JsonProperty("authDomain")
+    public void setAuthDomain(String authDomain) {
+        this.authDomain = authDomain;
+    }
+
+    @JsonProperty("authClientId")
+    public String getAuthClientId() {
+        return authClientId;
+    }
+
+    @JsonProperty("authClientId")
+    public void setAuthClientId(String authClientId) {
+        this.authClientId = authClientId;
+    }
+
+    @JsonProperty("authClientSecret")
+    public String getAuthClientSecret() {
+        return authClientSecret;
+    }
+
+    @JsonProperty("authClientSecret")
+    public void setAuthClientSecret(String authClientSecret) {
+        this.authClientSecret = authClientSecret;
     }
 }

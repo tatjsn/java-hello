@@ -1,68 +1,14 @@
 {namespace examples.simple}
 {template .signin}
-{@param name: string}
+{@param authUrl: string}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
-  {literal}
-  <style>
-   .hidden {
-     display: none;
-   }
-  </style>
-  {/literal}
 </head>
 <body>
-  <p id="siginin" class="hidden">
-    <button id="signin">Signin with Google</button>
-  </p>
-  <form id="callback" action="/signin/callback" method="post"></form>
-  {literal}
-    <script>
-     const firebaseConfig = {
-       apiKey: "AIzaSyC2ynLACXs-xxseP7UzveYeqtOeSWxUuHA",
-       authDomain: "coolblog-c1617.firebaseapp.com",
-       databaseURL: "https://coolblog-c1617.firebaseio.com",
-       projectId: "coolblog-c1617",
-       storageBucket: "coolblog-c1617.appspot.com",
-       messagingSenderId: "444267703473",
-       appId: "1:444267703473:web:ab01bc11f107d585b48690"
-     };
-     firebase.initializeApp(firebaseConfig);
-     async function postToCallback(user) {
-       const token = await user.getIdToken();
-       const input = document.createElement("input");
-       input.type = "hidden";
-       input.name = "token";
-       input.value = token;
-       const form = document.forms["callback"];
-       form.appendChild(input);
-       form.submit();
-     }
-     firebase.auth().getRedirectResult().then(function(result) {
-       if (result.user) {
-         // Callback from login flow
-         postToCallback(result.user);
-       } else {
-         var user = firebase.auth().currentUser;
-         if (user) {
-           // Existing user
-           postToCallback(user);
-         } else {
-           // No user information
-           document.getElementById("siginin").className = "";
-         }
-       }
-     });
-     document.getElementById('signin').addEventListener('click', function() {
-       firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider())
-     });
-    </script>
-  {/literal}
+<a href="{$authUrl}">Signin with Auth0</a>
 </body>
 {/template}
